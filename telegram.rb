@@ -2,29 +2,28 @@ require "telegram/bot"
 require "dotenv/load"
 require "httparty"
 
-token=ENV['TOKEN']
-
-domain='http://mileaadnanhussain:dilan@my-jenkins.vm:8080/job/vp-prepaid/build'
-
+token   = ENV['TOKEN']
+domain  = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['HOST']}"
+puts domain
 headers = {'Content-Type' => 'application/json'}
 
 Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     case message.text
-    when 'hai','Hai'
-      bot.api.send_message(chat_id: message.chat.id, text: "Hai, aku Milea. Salam kenal #{message.from.first_name} Sayang")	
+    when 'hai','Hai','hallo','hello','Hallo','Hello'
+      bot.api.send_message(chat_id: message.chat.id, text: "Hai, aku Milea. Salam kenal #{message.from.first_name}")	
       bot.api.send_message(chat_id: message.chat.id, text: "ada yang bsa aku bantu?")	
       bot.api.send_message(chat_id: message.chat.id, text: "/run smoketest")	
       bot.api.send_message(chat_id: message.chat.id, text: "/rerun run only flaky scenario smoketest")	
     when '/run'
-      request_type='post'
+      request_type = 'post'
+      url          = "#{domain}/job/vp-prepaid/buildWithParameters"
+      body         = {:parameter =>[{:name=>"action", :value => "run"}]}
+      options      = { headers: headers, body: body}	
       
-      body = {:parameter =>[{:name=>"action", :value => "run"}]}
-
-      options = { headers: headers, body: body}	
-      HTTParty.send(request_type, domain, options)
+      HTTParty.send(request_type, url, options)
     
-      bot.api.send_message(chat_id: message.chat.id, text: "Hello, udah aku run ya #{message.from.first_name} Sayang")
+      bot.api.send_message(chat_id: message.chat.id, text: "Hello, udah aku run ya #{message.from.first_name}")
     when '/rerun'
       request_type='post'
       
@@ -32,7 +31,7 @@ Telegram::Bot::Client.run(token) do |bot|
 
       options = { headers: headers, body: body}	
       HTTParty.send(request_type, domain, options)
-      bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name} Sayang")
+      bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name}")
     when 'iya','Iya'
       bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")
     when 'deploy'
@@ -44,7 +43,7 @@ Telegram::Bot::Client.run(token) do |bot|
 
       options = { headers: headers, body: body}	
       puts HTTParty.send(request_type, qa_jenkins, options)
-      bot.api.send_message(chat_id: message.chat.id, text: "Udah aku deploy ya #{message.from.first_name} Sayang")
+      bot.api.send_message(chat_id: message.chat.id, text: "Udah aku deploy ya #{message.from.first_name}")
     end
   end
 end
