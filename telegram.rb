@@ -17,19 +17,18 @@ Telegram::Bot::Client.run(token) do |bot|
       bot.api.send_message(chat_id: message.chat.id, text: "/rerun run only flaky scenario smoketest")	
     when '/run'
       request_type = 'post'
-      url          = "#{domain}/job/vp-prepaid/buildWithParameters"
-      body         = {:parameter =>[{:name=>"action", :value => "run"}]}
-      options      = { headers: headers, body: body}	
+      url          = "#{domain}/job/vp-prepaid/buildWithParameters?action=false"
+      # body         = {:parameter =>[{:name=>"action", :value => "run"}]}
+      options      = { headers: headers}	
       
       HTTParty.send(request_type, url, options)
     
       bot.api.send_message(chat_id: message.chat.id, text: "Hello, udah aku run ya #{message.from.first_name}")
     when '/rerun'
       request_type = 'post'
-      url          = "#{domain}/job/vp-prepaid/buildWithParameters"      
-      body         = {:parameter =>[{:name=>"action", :value => "rerun"}]}
+      url          = "#{domain}/job/vp-prepaid/buildWithParameters?action=true"      
 
-      options = { headers: headers, body: body}	
+      options = { headers: headers}	
       HTTParty.send(request_type, url, options)
       bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name}")
     when 'iya','Iya'
