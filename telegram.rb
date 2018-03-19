@@ -44,6 +44,45 @@ Telegram::Bot::Client.run(token) do |bot|
       options = { headers: headers, body: body}	
       puts HTTParty.send(request_type, qa_jenkins, options)
       bot.api.send_message(chat_id: message.chat.id, text: "Udah aku deploy ya #{message.from.first_name}")
+    when 'run smoketest'
+      url          = "http://mileaadnanhussain:dilan@172.16.8.89:8080/job/smoke-testing-vp-prepaid/buildWithParameters"
+
+      body = {
+      	:parameter => [
+      		{:name => "action", :value =>"run"},
+      		{:name => "squad_telegram_id", :value => "103443335"},
+      		{:name => "automation_branch", :value => "master"},
+      		{:name => "branch", :value => "curl"},
+      		{:name => "user_agent", :value => "blcanary"}
+      		]
+      	}
+
+      options      = { headers: headers, body: body}
+      request_type='post'
+
+      HTTParty.send(request_type, url, options)
+      	
+      bot.api.send_message(chat_id: message.chat.id, text: "Hello, udah aku run smoketest-vp-prepaid ya #{message.from.first_name}")
+    when 'rerun smoketest'
+      url          = "http://mileaadnanhussain:dilan@172.16.8.89:8080/job/smoke-testing-vp-prepaid/buildWithParameters"
+      
+      body = {
+      	:parameter => [
+      		{:name => "action", :value =>"rerun"},
+      		{:name => "squad_telegram_id", :value => "103443335"},
+      		{:name => "automation_branch", :value => "master"},
+      		{:name => "branch", :value => "curl"},
+      		{:name => "user_agent", :value => "blcanary"}
+      		]
+      	}
+
+      options      = { headers: headers, body: body}	
+      request_type='post'
+
+      HTTParty.send(request_type, url, options)
+
+      bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun smoketest scenario yang gagal vp-prepaid ya #{message.from.first_name}")
+      	  
     end
   end
 end
