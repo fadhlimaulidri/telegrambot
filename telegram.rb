@@ -54,7 +54,7 @@ Telegram::Bot::Client.run(token) do |bot|
     when 'iya','Iya'
       bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")	
     when 'run smoketest'
-      url          = "http://mileaadnanhussain:dilan@172.16.8.89:8080/job/smoke-testing-vp-prepaid/buildWithParameters"
+      url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
 
       body = {
       	:parameter => [
@@ -73,7 +73,7 @@ Telegram::Bot::Client.run(token) do |bot|
       	
       bot.api.send_message(chat_id: message.chat.id, text: "Hello, udah aku run smoketest-vp-prepaid ya #{message.from.first_name}")
     when 'rerun smoketest'
-      url          = "http://mileaadnanhussain:dilan@172.16.8.89:8080/job/smoke-testing-vp-prepaid/buildWithParameters"
+      url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
       
       body = {
       	:parameter => [
