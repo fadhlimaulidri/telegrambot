@@ -11,7 +11,7 @@ Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
 
   if message.text.end_with? "/deploy"
-      bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging_server staging_branch")
+      bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging69.vm master")
   elsif message.text.split(' ').size == 3 and message.text.start_with? "/deploy"
     a = message.text.split(" ")
     request_type = 'post'
@@ -26,6 +26,15 @@ Telegram::Bot::Client.run(token) do |bot|
       bot.api.send_message(chat_id: message.chat.id, text: "ada yang bsa aku bantu?")	
       bot.api.send_message(chat_id: message.chat.id, text: "/run smoketest")	
       bot.api.send_message(chat_id: message.chat.id, text: "/rerun run only flaky scenario smoketest")	
+    when '/help'
+      bot.api.send_message(chat_id: message.chat.id, text: "
+        Hai, aku Milea. Salam kenal #{message.from.first_name}
+
+        Kamu bisa pakai command berikut
+        /deploy - deploy itu lama biar aku saja
+        `Eg. /deploy staging69.vm master` 
+      ")  
+      
     when '/run'
       request_type = 'post'
       url          = "#{domain}/job/vp-prepaid/buildWithParameters?action=false"
