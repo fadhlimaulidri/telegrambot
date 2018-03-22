@@ -51,8 +51,8 @@ Telegram::Bot::Client.run(token) do |bot|
       HTTParty.send(request_type, url, options)
       bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name}")
     when 'iya','Iya'
-      staging_validate('staging30.vm')
-      bot.api.send_message(chat_id: message.chat.id, text: "#{msg}")	
+      # staging_validate('staging30.vm')
+      bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")	
     when 'run smoketest'
       url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
 
