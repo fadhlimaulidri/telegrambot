@@ -17,7 +17,6 @@ Telegram::Bot::Client.run(token) do |bot|
     request_type = 'post'
     url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=#{a[2]}&staging_action=deploy&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
     HTTParty.send(request_type, url)
-    bot.api.send_message(chat_id: message.chat.id, text: "Udah aku deploy ya #{message.from.first_name}")
   else  
     
     case message.text
@@ -52,7 +51,8 @@ Telegram::Bot::Client.run(token) do |bot|
       HTTParty.send(request_type, url, options)
       bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name}")
     when 'iya','Iya'
-      bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")	
+      staging_validate('staging30.vm')
+      bot.api.send_message(chat_id: message.chat.id, text: "#{msg}")	
     when 'run smoketest'
       url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
 
