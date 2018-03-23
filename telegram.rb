@@ -12,6 +12,18 @@ Telegram::Bot::Client.run(token) do |bot|
 
   if message.text.end_with? "/deploy"
       bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging69.vm master")
+  elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:restart"
+    a = message.text.split(" ")
+    url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:restart&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
+    HTTParty.post(url)
+  elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:start"
+    a = message.text.split(" ")
+    url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:start&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
+    HTTParty.post(url)
+  elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:stop"
+    a = message.text.split(" ")
+    url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:stop&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
+    HTTParty.post(url)
   elsif message.text.split(' ').size == 2 and message.text.start_with? "/lock:release"
     a = message.text.split(" ")
     url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=lock:release&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
@@ -36,6 +48,15 @@ Telegram::Bot::Client.run(token) do |bot|
         Kamu bisa pakai command berikut
         /deploy - deploy itu lama biar aku saja
         `Eg. /deploy staging69.vm master` 
+
+        /lock:release
+        `Eg. /lock:release staging69.vm` 
+
+        /backburner:start
+        `Eg. /backburner:start staging69.vm` 
+
+        /backburner:stop
+        `Eg. /backburner:stop staging69.vm` 
       ")  
       
     when '/run'
