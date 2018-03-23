@@ -12,6 +12,10 @@ Telegram::Bot::Client.run(token) do |bot|
 
   if message.text.end_with? "/deploy"
       bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging69.vm master")
+  elsif message.text.split(' ').size == 2 and message.text.start_with? "/lock:release"
+    a = message.text.split(" ")
+    url = "http://mileaadnanhussain:dilan@qa-jenkins.vm:8080/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=lock:release&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
+    HTTParty.post(url)
   elsif message.text.split(' ').size == 3 and message.text.start_with? "/deploy"
     a = message.text.split(" ")
     request_type = 'post'
