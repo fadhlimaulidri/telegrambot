@@ -1,6 +1,8 @@
 require "telegram/bot"
 require "dotenv/load"
 require "httparty"
+  require 'logging'
+  require './log'
 
 token   = ENV['TOKEN']
 domain  = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['HOST']}"
@@ -77,7 +79,7 @@ Telegram::Bot::Client.run(token) do |bot|
       bot.api.send_message(chat_id: message.chat.id, text: "Udah aku rerun scenario yang gagal ya #{message.from.first_name}")
     when 'iya','Iya'
       # staging_validate('staging30.vm')
-      bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")	
+      bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")
     when 'run smoketest'
       url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
 
@@ -121,5 +123,16 @@ Telegram::Bot::Client.run(token) do |bot|
 
   end
   #end if
+  logchat(message.chat.id, message.from.first_name, message.from.last_name, message.from.username, message.text)
+
+  # Try catch
+
+  begin
+    
+  rescue Faraday::Error::ConnectionFailed => e
+    bot.api.send_message(chat_id: 103443335, text: "Milea sakit kak, cek service plis")
+  end
+  # End try catch
+
   end
 end
