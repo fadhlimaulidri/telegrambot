@@ -35,8 +35,17 @@ Telegram::Bot::Client.run(token) do |bot|
     request_type = 'post'
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=#{a[2]}&staging_action=deploy&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
     HTTParty.send(request_type, url)
-  else  
-    
+  elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest run"
+    a = message.text.split(" ")
+    request_type='post'
+    url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=false&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
+    HTTParty.send(request_type, url)
+  elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest rerun"
+    a = message.text.split(" ")
+    request_type='post'
+    url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=true&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
+    HTTParty.send(request_type, url)
+  else
     case message.text
     when 'hai','Hai','hallo','hello','Hallo','Hello'
       bot.api.send_message(chat_id: message.chat.id, text: "Hai, aku Milea. Salam kenal #{message.from.first_name}")	
@@ -59,7 +68,7 @@ Telegram::Bot::Client.run(token) do |bot|
 
         /backburner:stop
         `Eg. /backburner:stop staging69.vm` 
-      ")  
+      ")
       
     when '/run'
       request_type = 'post'
@@ -80,10 +89,6 @@ Telegram::Bot::Client.run(token) do |bot|
     when 'iya','Iya'
       # staging_validate('staging30.vm')
       bot.api.send_message(chat_id: message.chat.id, text: "iya bacot")
-    when 'run smoketest'
-      request_type='post'
-      url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters?action=false&squad_telegram_id=103443335&automation_branch=master&branch=curl&user_agent=blcanary"
-      HTTParty.send(request_type, url)
     when 'rerun smoketest'
       url          = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/smoke-testing-vp-prepaid/buildWithParameters"
       
