@@ -2,7 +2,7 @@ require "telegram/bot"
 require "dotenv/load"
 require "httparty"
 require 'logging'
-require './log'
+require './helper'
 
 token   = ENV['TOKEN']
 domain  = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['HOST']}"
@@ -17,7 +17,7 @@ Telegram::Bot::Client.run(token) do |bot|
   elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:restart"
     a = message.text.split(" ")
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:restart&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
-    HTTParty.post(url)
+    post(url)
   elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:start"
     a = message.text.split(" ")
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:start&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
@@ -25,26 +25,24 @@ Telegram::Bot::Client.run(token) do |bot|
   elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:stop"
     a = message.text.split(" ")
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=backburner:stop&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
-    HTTParty.post(url)
+    post(url)
   elsif message.text.split(' ').size == 2 and message.text.start_with? "/lock:release"
     a = message.text.split(" ")
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=master&staging_action=lock:release&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
-    HTTParty.post(url)
+    post(url)
   elsif message.text.split(' ').size == 3 and message.text.start_with? "/deploy"
     a = message.text.split(" ")
-    request_type = 'post'
     url = "http://mileaadnanhussain:dilan@#{ENV['JENKINS_STAGING_HOST']}/job/Staging%20Deployment/buildWithParameters?staging_server=#{a[1]}&staging_user=bukalapak&staging_branch=#{a[2]}&staging_action=deploy&migrate=true&reindex=false&normalize_date=true&telegram_id=#{message.chat.id}"
-    HTTParty.send(request_type, url)
+    post(url)
   elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest run"
     a = message.text.split(" ")
     request_type='post'
     url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=false&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
-    HTTParty.send(request_type, url)
+    post(url)
   elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest rerun"
     a = message.text.split(" ")
-    request_type='post'
     url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=true&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
-    HTTParty.send(request_type, url)
+    post(url)
   else
     case message.text
     when 'hai','Hai','hallo','hello','Hallo','Hello'
