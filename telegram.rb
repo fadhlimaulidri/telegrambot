@@ -43,14 +43,12 @@ Telegram::Bot::Client.run(token) do |bot|
         a = message.text.split(" ")
         url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=true&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
         post(url)
-      else
-        case message.text
-        when 'hai','Hai','hallo','hello','Hallo','Hello'
+      elsif message.text =~ /^(hai|Hai|hallo|hello|Hallo|Hello)$/
           text = "Hai, aku Milea. Salam kenal #{message.from.first_name}
           ada yang bsa aku bantu?
           /help untuk yg bsa aku bantu"
           bot.api.send_message(chat_id: message.chat.id, text: text)
-        when '/help'
+      elsif message.text == '/help'
           bot.api.send_message(chat_id: message.chat.id, text: "
             Hai, aku Milea. Salam kenal #{message.from.first_name}
 
@@ -67,10 +65,11 @@ Telegram::Bot::Client.run(token) do |bot|
             /backburner:stop
             `Eg. /backburner:stop staging69.vm` 
           ")
-        when 'iya','Iya'
+      elsif message.text =~ /^(iya|Iya)$/
           # staging_validate('staging30.vm')
           bot.api.send_message(chat_id: message.chat.id, text: "iya")
-        end
+      else
+        bot.api.send_message(chat_id: message.chat.id, text: "kakak ngomong apa sih? aku gak ngerti")
       end
       #end if
     logchat(message.chat.id, message.from.first_name, message.from.last_name, message.from.username, message.text)
