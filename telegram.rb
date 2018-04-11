@@ -51,8 +51,8 @@ Telegram::Bot::Client.run(token) do |bot|
           ada yang bsa aku bantu?
           /help untuk yg bsa aku bantu"
           bot.api.send_message(chat_id: message.chat.id, text: text)
-      elsif message.text.split('-').size == 3 and message.text.start_with? "ssh"
-        a = message.text.split("-")
+      elsif message.text.split('^').size == 3 and message.text.start_with? "ssh"
+        a = message.text.split("^")
         @hostname = a[1]
         @username = "bukalapak"
         @password = "bukalapak"
