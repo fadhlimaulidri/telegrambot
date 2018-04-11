@@ -12,7 +12,9 @@ headers = {'Content-Type' => 'application/json'}
 Telegram::Bot::Client.run(token) do |bot|
   begin # Try catch
     bot.listen do |message|
-      if message.text.end_with? "/deploy"
+      puts message.text
+      if message.text.nil?
+      elsif message.text.end_with? "/deploy"
           bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging69.vm master")
       elsif message.text.split(' ').size == 2 and message.text.start_with? "/backburner:restart"
         a = message.text.split(" ")
