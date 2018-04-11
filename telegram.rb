@@ -3,6 +3,7 @@ require "dotenv/load"
 require "httparty"
 require 'logging'
 require './helper'
+require 'net/ssh'
 
 token   = ENV['TOKEN']
 domain  = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['HOST']}"
@@ -50,6 +51,20 @@ Telegram::Bot::Client.run(token) do |bot|
           ada yang bsa aku bantu?
           /help untuk yg bsa aku bantu"
           bot.api.send_message(chat_id: message.chat.id, text: text)
+      elsif message.text.split('-').size == 3 and message.text.start_with? "ssh"
+        a = message.text.split("-")
+        @hostname = a[1]
+        @username = "bukalapak"
+        @password = "bukalapak"
+        @cmd = a[2]
+        begin
+          ssh = Net::SSH.start(@hostname, @username, :password => @password)
+          response = ssh.exec!(@cmd)
+          ssh.close
+          bot.api.send_message(chat_id: message.chat.id, text: response)
+        rescue
+          "Unable to connect to #{@hostname} using #{@username}/#{@password}"
+        end
       elsif message.text == '/help'
           bot.api.send_message(chat_id: message.chat.id, text: "
             Hai, aku Milea. Salam kenal #{message.from.first_name}
