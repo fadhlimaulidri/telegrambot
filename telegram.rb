@@ -40,11 +40,13 @@ Telegram::Bot::Client.run(token) do |bot|
       elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest run"
         a = message.text.split(" ")
         request_type='post'
-        url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=false&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
+        telegram_id = message.chat.id
+        url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=false&squad_telegram_id=#{telegram_id}&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
         post(url)
       elsif message.text.split(' ').size == 3 and message.text.start_with? "/smoketest rerun"
         a = message.text.split(" ")
-        url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=true&squad_telegram_id=103443335&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
+        telegram_id = message.chat.id
+        url = "http://#{ENV['USERNAME']}:#{ENV['PASSWORD']}@#{ENV['JENKINS_SMOKETEST_HOST']}/job/#{a[2]}/buildWithParameters?action=true&squad_telegram_id=#{telegram_id}&automation_branch=master&branch=running_via_milea&user_agent=blcanary"
         post(url)
       elsif message.text =~ /^(hai|Hai|hallo|hello|Hallo|Hello)$/
           text = "Hai, aku Milea. Salam kenal #{message.from.first_name}
