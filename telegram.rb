@@ -82,13 +82,16 @@ Telegram::Bot::Client.run(token) do |bot|
             `Eg. /backburner:start staging69.vm` 
 
             /backburner:stop
-            `Eg. /backburner:stop staging69.vm` 
+            `Eg. /backburner:stop staging69.vm`
+
+            /smoketest 
+            `E.g : /smoketest run smoke-testing-vp-prepaid` 
           ")
       elsif message.text =~ /^(iya|Iya)$/
           # staging_validate('staging30.vm')
           bot.api.send_message(chat_id: message.chat.id, text: "iya")
       else
-        bot.api.send_message(chat_id: message.chat.id, text: "kakak ngomong apa sih? aku gak ngerti")
+        # bot.api.send_message(chat_id: message.chat.id, text: "kakak ngomong apa sih? aku gak ngerti")
       end
       #end if
     logchat(message.chat.id, message.from.first_name, message.from.last_name, message.from.username, message.text)
