@@ -91,7 +91,25 @@ Telegram::Bot::Client.run(token) do |bot|
           # staging_validate('staging30.vm')
           bot.api.send_message(chat_id: message.chat.id, text: "iya")
       else
-        # bot.api.send_message(chat_id: message.chat.id, text: "kakak ngomong apa sih? aku gak ngerti")
+          bot.api.send_message(chat_id: message.chat.id, text: "
+            Hai, aku Milea. Salam kenal #{message.from.first_name}
+
+            Kamu bisa pakai command berikut
+            /deploy - deploy itu lama biar aku saja
+            `Eg. /deploy staging69.vm master` 
+
+            /lock:release
+            `Eg. /lock:release staging69.vm` 
+
+            /backburner:start
+            `Eg. /backburner:start staging69.vm` 
+
+            /backburner:stop
+            `Eg. /backburner:stop staging69.vm`
+
+            /smoketest 
+            `E.g : /smoketest run smoke-testing-vp-prepaid` 
+          ")
       end
       #end if
     logchat(message.chat.id, message.from.first_name, message.from.last_name, message.from.username, message.text)
