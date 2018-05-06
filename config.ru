@@ -1,0 +1,2 @@
+require './telegram'
+run TelegramBotApp
