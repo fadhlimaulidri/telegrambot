@@ -2,7 +2,7 @@ require_all './config/*.rb'
 require_all './lib/**/*.rb'
 
 class TelegramBotApp
-  puts ENV['TOKEN']
+  puts 'background is started'
   ::Telegram::Bot::Client.run(ENV['TOKEN']) do |bot|
     bot.listen do |message|
       if message.text.nil?
