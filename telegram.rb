@@ -1,11 +1,12 @@
 require "telegram/bot"
 require "dotenv/load"
+require 'require_all'
 require "httparty"
 require 'logging'
 require './helper'
 require 'net/ssh'
-Dir[File.dirname(__FILE__) + '/config/*.rb'].each {|file| require file }
-Dir[File.dirname(__FILE__) + '/lib/**/*.rb'].each {|file| require file }
+require_all './config/*.rb'
+require_all './lib/**/*.rb'
 
 class TelegramBotApp
   puts ENV['TOKEN']

@@ -18,7 +18,7 @@ class Connection
   def post(url, query = {}, payload = {})
     restclient({
       method: :get,
-      url: "#{@scheme}://#{@host}",
+      url: "#{@scheme}://#{@host}/#{url}",
       timeout: Timeout,
       open_timeout: OpenTimeout,
       payload: payload.to_json,
