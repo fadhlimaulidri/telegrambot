@@ -1,10 +1,4 @@
-require "telegram/bot"
-require "dotenv/load"
-require 'require_all'
-require "httparty"
-require 'logging'
 require './helper'
-require 'net/ssh'
 require_all './config/*.rb'
 require_all './lib/**/*.rb'
 
