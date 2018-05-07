@@ -10,7 +10,7 @@ module Service
 
       def perform
         begin
-          arr = @message.text.split(' ')
+          arr = @message.text.strip.split(' ')
           if arr.size == 3
             conn = ::Connection.new('http', ENV['JENKINS_STAGING_HOST'])
             param = {

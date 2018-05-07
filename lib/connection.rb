@@ -36,6 +36,6 @@ class Connection
     payload = opts.reject { |k, v| k == :headers }
     ::RestClient::Request.execute(opts, &block)
   rescue => e
-    raise ::AlphaBrokerBot::ConnectionError.new
+    raise ::AlphaBrokerBot::ConnectionError.new(e.message)
   end
 end
