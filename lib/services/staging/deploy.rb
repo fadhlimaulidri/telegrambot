@@ -1,6 +1,6 @@
 module Service
   module Staging
-    class Deploy < Base
+    class Deploy
       # var bot is telegram bot object
       # var message is telegram message object
       def initialize(bot, message)
@@ -10,7 +10,7 @@ module Service
 
       def perform
         begin
-          arr = @message.split(' ')
+          arr = @message.text.split(' ')
           if arr.size == 3
             conn = ::Connection.new('http', ENV['JENKINS_STAGING_HOST'])
             param = {
@@ -25,11 +25,11 @@ module Service
             }
             conn.post('job/Staging%20Deployment/buildWithParameters', param)
           else
-            bot.api.send_message(chat_id: message.chat.id, text: "Eg. /deploy staging69.vm master")
+            @bot.api.send_message(chat_id: @message.chat.id, text: "Eg. /deploy staging69.vm master")
           end
         rescue TelegrambotError => e
           LoggerOut.info(e)
-          bot.api.send_message(chat_id: message.chat.id, text: e.message)
+          @bot.api.send_message(chat_id: @message.chat.id, text: e.message)
         end
       end
     end
