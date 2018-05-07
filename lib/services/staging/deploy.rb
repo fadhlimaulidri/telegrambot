@@ -6,13 +6,17 @@ module Service
       def initialize(bot, message)
         @bot = bot
         @message = message
+        @conn = ::Connection.new(
+          'http',
+          ENV['JENKINS_STAGING_HOST'],
+          "Basic #{JenkinsConfiguration['staging']['authorization']}"
+        )
       end
 
       def perform
         begin
           arr = @message.text.strip.split(' ')
           if arr.size == 3
-            conn = ::Connection.new('http', ENV['JENKINS_STAGING_HOST'])
             param = {
               staging_server: arr[1],
               staging_user: 'bukalapak',
@@ -23,7 +27,7 @@ module Service
               normalize_date: true,
               telegram_id: @message.chat.id
             }
-            conn.post('job/Staging%20Deployment/buildWithParameters', param)
+            @conn.post('job/Staging%20Deployment/buildWithParameters', param)
           else
             @bot.api.send_message(chat_id: @message.chat.id, text: "Eg. /deploy staging69.vm master")
           end

@@ -1,17 +1,16 @@
-require 'pry'
 class Connection
   # To use, scheme is http or https
-  # e.g. conn = Connection.new("http", "localhost:7662")
+  # e.g. conn = Connection.new("http", "localhost:7662", JenkinsConfiguration['staging']['authorization'])
   # conn.post("/tests/coba", { staging_action: "backburner:restart" })
   attr_accessor :scheme, :host
 
   Timeout = 60
   OpenTimeout = 60
 
-  def initialize(scheme, host)
+  def initialize(scheme, host, auth)
     @scheme = scheme
     @host = host
-    @auth = "Basic #{::JenkinsConfiguration['authorization']}"
+    @auth = auth
   end
 
   # query is for url query

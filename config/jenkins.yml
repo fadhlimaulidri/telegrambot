@@ -1,3 +1,8 @@
-host: <%= ENV['JENKINS_STAGING_HOST'] %>
-username: <%= ENV['JENKINS_USERNAME'] %>
-password: <%= ENV['JENKINS_PASSWORD'] %>
+staging:
+  host: <%= ENV['JENKINS_STAGING_HOST'] %>
+  username: <%= ENV['JENKINS_STAGING_USERNAME'] %>
+  password: <%= ENV['JENKINS_STAGING_PASSWORD'] %>
+data_center:
+  host: <%= ENV['JENKINS_DC_HOST'] %>
+  username: <%= ENV['JENKINS_DC_USERNAME'] %>
+  password: <%= ENV['JENKINS_DC_PASSWORD'] %>
