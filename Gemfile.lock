@@ -53,6 +53,7 @@ GEM
       rack (>= 1.0)
       rack-test (>= 0.5)
     rake (12.1.0)
+    redis (4.0.1)
     require_all (2.0.0)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
@@ -104,6 +105,7 @@ DEPENDENCIES
   pry
   racksh
   rake (= 12.1.0)
+  redis
   require_all
   rest-client
   rspec (~> 3.5)

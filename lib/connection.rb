@@ -1,3 +1,4 @@
+require 'pry'
 class Connection
   # To use, scheme is http or https
   # e.g. conn = Connection.new("http", "localhost:7662")
@@ -17,7 +18,7 @@ class Connection
   # payload is for json body
   def post(url, query = {}, payload = {})
     restclient({
-      method: :get,
+      method: :post,
       url: "#{@scheme}://#{@host}/#{url}",
       timeout: Timeout,
       open_timeout: OpenTimeout,
@@ -32,10 +33,8 @@ class Connection
   end
 
   def restclient(opts, &block)
-    payload = opts.except(:headers)
-    response = ::RestClient::Request.execute(opts, &block)
-    response = JSON.parse response.body
-    response
+    payload = opts.reject { |k, v| k == :headers }
+    ::RestClient::Request.execute(opts, &block)
   rescue => e
     raise ::AlphaBrokerBot::ConnectionError.new
   end
