@@ -28,7 +28,7 @@ module Service
             @bot.api.send_message(chat_id: @message.chat.id, text: "Eg. /deploy staging69.vm master")
           end
         rescue TelegrambotError => e
-          LoggerOut.info(e)
+          LoggerOut.error("#{@message.chat.id}, #{@message.from.first_name}, #{@message.from.last_name}, #{@message.from.username}, #{e.message}")
           @bot.api.send_message(chat_id: @message.chat.id, text: e.message)
         end
       end
