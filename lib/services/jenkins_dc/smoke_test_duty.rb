@@ -9,18 +9,23 @@ module Service
       end
 
       def perform
-        values = JSON.parse(RedisServer.get('smoke_test_duty'))
-        username = @message.from.username
+        arr = @message.text.strip.split(' ')
+        if arr.size == 2
+          values = JSON.parse(RedisServer.get('smoke_test_duty'))
 
-        # Get job name from message username
-        job = AssigneeSquad['squads'].select { |key, values| values.include?(username) }
-        job_name = job.keys.first
+          # check if specified job name is not listed
+          if !values.keys.include?(arr[1])
+            @bot.api.send_message(chat_id: @message.chat.id, text: "there is no job #{arr[1]}")
+          end
 
-        # set job name status to true
-        values[job_name]['status'] = true
-        RedisServer.set('smoke_test_duty', values.to_json)
+          # set job name status to true
+          values[arr[1]]['status'] = true
+          RedisServer.set('smoke_test_duty', values.to_json)
 
-        @bot.api.send_message(chat_id: @message.chat.id, text: "#{job_name} sudah diubah menjadi aman")
+          @bot.api.send_message(chat_id: @message.chat.id, text: "#{arr[1]} sudah diubah menjadi aman")
+        else
+          @bot.api.send_message(chat_id: @message.chat.id, text: "Eg. /aman smoke-testing-vp-postpaid")
+        end
       rescue => e
         @bot.api.send_message(chat_id: @message.chat.id, text: e.message)
       end
