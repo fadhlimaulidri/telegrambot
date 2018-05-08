@@ -12,6 +12,8 @@ class TelegramBotApp
           ::Service::Staging.deploy(bot, message)
         elsif message.text.start_with? "/aman"
           ::Service::JenkinsDC.smoke_test_duty(bot, message)
+        elsif message.text.start_with? "/failed_smoketest"
+          ::Service::JenkinsDC.failed_smoke_test(bot, message)
         end
       end
     end
