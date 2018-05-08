@@ -2,7 +2,7 @@ class TelegrambotError < StandardError
   attr_accessor :code, :message
   def initialize(msg, code = 33_000)
     @code = code
-    @error_message = msg
+    @message = msg
     super(msg)
   end
 end
