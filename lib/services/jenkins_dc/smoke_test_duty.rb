@@ -16,6 +16,7 @@ module Service
           # check if specified job name is not listed
           if !values.keys.include?(arr[1])
             @bot.api.send_message(chat_id: @message.chat.id, text: "there is no job #{arr[1]}")
+            return
           end
 
           # set job name status to true
