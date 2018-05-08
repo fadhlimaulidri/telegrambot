@@ -1,4 +1,3 @@
-require 'pry'
 module Service
   module JenkinsDC
     class FailedSmokeTest
@@ -14,9 +13,13 @@ module Service
         failed_jobs = values.select { |name, jobs| !jobs['status'] }
 
         fail_job_reports = []
-        failed_jobs.each do |name, jobs|
-          usernames = jobs['usernames'].map { |username| "@#{username}" }
-          fail_job_reports << "#{name} #{usernames.join(', ')}"
+        if failed_jobs.empty?
+          @bot.api.send_message(chat_id: @message.chat.id, text: 'Smoketest nya sudah berhasil semua!')
+        else
+          failed_jobs.each do |name, jobs|
+            usernames = jobs['usernames'].map { |username| "@#{username}" }
+            fail_job_reports << "#{name} #{usernames.join(', ')}"
+          end
         end
 
         @bot.api.send_message(chat_id: @message.chat.id, text: message_result(fail_job_reports))
