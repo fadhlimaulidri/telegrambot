@@ -17,8 +17,10 @@ module Service
           @bot.api.send_message(chat_id: @message.chat.id, text: 'Smoketest nya sudah berhasil semua!')
         else
           failed_jobs.each do |name, jobs|
-            usernames = jobs['usernames'].map { |username| "@#{username}" }
-            fail_job_reports << "#{name} #{usernames.join(', ')}"
+            if jobs['usernames'] 
+              usernames = jobs['usernames'].map { |username| "@#{username}" }
+              fail_job_reports << "#{name} #{usernames.join(', ')}"
+            end
           end
         end
 

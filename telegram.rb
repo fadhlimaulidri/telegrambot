@@ -7,14 +7,12 @@ class TelegramBotApp
     bot.listen do |message|
       if message.text.nil?
       else
-        puts message.chat.id
-        puts ENV['TELEGRAM_ID_QA']
         LoggerOut.info("#{message.chat.id}, #{message.from.first_name}, #{message.from.last_name}, #{message.from.username}, #{message.text}")
         if message.text.start_with? "/deploy"
           ::Service::Staging.deploy(bot, message)
-        elsif message.text.start_with? "/aman" and message.chat.id = ENV['TELEGRAM_ID_QA']
+        elsif message.text.start_with? "/aman"
           ::Service::JenkinsDC.smoke_test_duty(bot, message)
-        elsif message.text.start_with? "/failed_smoketest" and message.chat.id = ENV['TELEGRAM_ID_QA']
+        elsif message.text.start_with? "/failed_smoketest"
           ::Service::JenkinsDC.failed_smoke_test(bot, message)
         elsif message.text.start_with? "/lock_release"
           ::Service::Staging.lock_release(bot, message)
